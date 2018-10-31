@@ -1202,6 +1202,7 @@ function removeClass(str, ele) {
 
 // 添加DOM
 function addDom(value, index) {
+	var remain = value.length - index - 1;
 	return 	'<p>' +  value[index].en + '</p>' +
 			'<p class="en">' +  value[index].cn + '</p>' +
 			'<div class="control" id="control">' +
@@ -1211,6 +1212,7 @@ function addDom(value, index) {
 				'<a href="javascript:void(0)" class="query">查询详情</a>' + 
 			'</div>' +
 			'<a href="javascript:void(0)" class="back">返回</a>' + 
+			'<b class="count">'+ remain +'</b>' + 
 			'<div class="panel" onTouchStart="cancelBubble(event)">' + 
 			'</div>';
 }
