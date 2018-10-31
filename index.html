@@ -263,7 +263,7 @@
 						salt: '2018',
 						sign: sign('66add385bf2e9752', value ,'2018')
 					}
-					jsonp('http://openapi.youdao.com/api', params).then(data => {
+					jsonp('https://openapi.youdao.com/api', params).then(data => {
 						panel.innerHTML = addDetail(data);
 						addClass('showDetail', panel);
 					});
