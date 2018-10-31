@@ -76,20 +76,89 @@
 			padding: 0 20px;
 			color: #3b73af;
 		}
-		.show a {
+		.show a.back {
 			position: absolute;
 			top: 25px;
 			left: 25px;
 			font-size: 22px;
 			color: #666;
 		}
+		.show a.query {
+			display: block;
+			text-align: center;
+			color: #fff;
+			background: #3b73af;
+			border-radius: 6px;
+			width: 100px;
+			line-height: 40px;
+			height: 40px;
+			margin: 40px auto 0;
+			font-size: 16px;
+			
+		}
 		.content .en {
+			position: relative;
 			opacity: 0;
 			transition: opacity .2s;
 			-webkit-transition: opacity .2s;
 		}
 		.content p.display {
 			opacity: 1;
+		}
+		.content .panel {
+			position: absolute;
+			width: 80%;
+			top: 50%;
+			left: 50%;
+			padding: 30px 20px;
+			transform: translate3d(-50%, -50%, 0);
+			-webkit-transform: translate3d(-50%, -50%, 0);
+			background: royalblue;
+			color: #FFF;
+			opacity: 0;
+			z-index: -1;
+			transition: opacity .2s;
+			-webkit-transition: opacity .2s;
+		}
+		.content .panel.showDetail {
+			opacity: 1;
+			z-index: 2;
+		}
+		.content .panel h1 {
+			margin: 0 0 20px;
+		}
+		.content .panel div {
+			font-size: 20px;
+			margin-bottom: 10px;
+		}
+		.content .panel div i {
+			display: inline-block;
+			width: 32px;
+			height: 32px;
+			vertical-align: middle;
+			background: url(./image/laba.png) no-repeat;
+			margin: 0 10px 0 5px;
+		}
+		.content .panel p {
+			font-size: 18px;
+			margin: 30px 0;
+		}
+		.content .panel h4 {
+			color: #f4ea2a;
+			font-size: 22px;
+			margin-bottom: 5px;
+		}
+		.content .panel ul li {
+			margin-bottom: 10px;
+			line-height: 1.8;
+		}
+		.content .panel ul li em {
+			font-size: 22px;
+			color: #c8ff00f8;
+			margin-right: 10px;
+		}
+		.content .panel ul li span {
+			font-size: 20px;
 		}
 	</style>
 </head>
@@ -138,6 +207,7 @@
 	</div>
 	<div class="content" id="content">
 	</div>
+	<script type="text/javascript" src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.min.js"></script>
 	<script type="text/javascript" src="data.js"></script>
 	<script type="text/javascript">
 		window.onload = function() {
@@ -181,6 +251,25 @@
 				if (event.target.innerHTML === '返回') {
 					index = 0;
 					removeClass('show', content);
+				}
+				if (event.target.innerHTML === '查询详情') {
+					var panel = document.querySelectorAll('.panel')[0];
+					var value = vSource[keyIndex][index].en;
+					var params = {
+						q: value,
+						from: 'EN',
+						to: 'zh-CHS',
+						appKey: '66add385bf2e9752',
+						salt: '2018',
+						sign: sign('66add385bf2e9752', value ,'2018')
+					}
+					jsonp('http://openapi.youdao.com/api', params).then(data => {
+						panel.innerHTML = addDetail(data);
+						addClass('showDetail', panel);
+					});
+				} else {
+					var panel = document.querySelectorAll('.panel')[0];
+					removeClass('showDetail', panel);
 				}
 			})
 		}
